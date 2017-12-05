@@ -1,0 +1,18 @@
+/*--------   VARIABLES  --------*/
+//------------------------------------------------------------
+// Media Query Shortcuts
+// @media #{$screen-sm-viewport} {
+//
+// }
+//------------------------------------------------------------
+$screen-sm-min: 450px;
+$screen-sm-max: 729px;
+$screen-md-min: 730px;
+$screen-md-max: 991px;
+$screen-lg-min: 992px;
+$screen-xl-min: 1200px;
+
+$screen-sm-viewport: "only screen and (min-width: #{$screen-sm-min})";
+$screen-md-viewport: "only screen and (min-width: #{$screen-md-min})";
+$screen-lg-viewport: "only screen and (min-width: #{$screen-lg-min})";
+$screen-xl-viewport: "only screen and (min-width: #{$screen-xl-min})";

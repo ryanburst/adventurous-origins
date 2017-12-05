@@ -1,0 +1,38 @@
+.attribute {
+  margin-bottom: 8px;
+  @media #{$screen-sm-viewport} {
+    display: flex;
+  }
+  &__cell {
+    vertical-align: top;
+    &--label {
+      flex-shrink: 0;
+      font-family: 'Spectral SC', serif;
+      font-weight: 600;
+      font-style: normal;
+      @media #{$screen-sm-viewport} {
+        width: 200px;
+      }
+    }
+    p {
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+    ol {
+      padding: 0;
+      list-style: none;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      @media #{$screen-md-viewport} {
+        display: flex;
+      }
+    }
+    li {
+      margin-bottom: 10px;
+      flex-shrink: 0;
+      @media #{$screen-md-viewport} {
+        width: 49%;
+      }
+    }
+  }
+}

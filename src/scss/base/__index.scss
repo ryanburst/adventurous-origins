@@ -1,0 +1,23 @@
+/*!
+========== VARIABLES
+*/
+// variables for our entire project, generic to component
+@import "variables";
+
+/*!
+========== ACCESSABILITY
+*/
+// screen reader or any accessibility specific declarations
+@import "accessibility";
+
+/*!
+========== GLOBAL
+*/
+// global elements, usually without class names, may override discover common css
+@import "global";
+
+/*!
+========== LAYOUT
+*/
+// layout declarations and overrides, usually for declarations defined in discover common css
+@import "layout";

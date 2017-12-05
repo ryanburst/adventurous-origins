@@ -1,0 +1,22 @@
+.heading {
+  position: relative;
+  left: 50%;
+  display: inline-block;
+  margin: 0;
+  font-family: 'Spectral SC', serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 43px;
+  transform: translateX(-50%);
+  &__small {
+    position: absolute;
+    top: 2em;
+    left: 4em;
+    font-size: 0.28em;
+  }
+  &__first {
+    font-size: 1.5em;
+    font-family: 'Khmer', cursive;
+    letter-spacing: -3px;
+  }
+}

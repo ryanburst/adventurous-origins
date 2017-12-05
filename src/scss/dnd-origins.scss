@@ -1,0 +1,24 @@
+/*!
+========== INIT
+*/
+// styles reset (normalize) and third party scss entry point
+@import 'vendor/__index';
+
+/*!
+========== BASE
+*/
+// variables, fonts, mixins, helpers... common styles used across the entire site
+@import 'base/__index';
+
+/*!
+========== COMPONENTS
+*/
+// reusable components
+@import 'components/__index';
+
+/*!
+========== SPECIFICS
+*/
+// declarations specific to the project, organized according to the items/sections represented
+// when in doubt, put it in here
+@import 'specifics/__index';
