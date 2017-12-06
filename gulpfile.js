@@ -25,7 +25,7 @@ gulp.task('scripts', function () {
   return gulp.src([
       './src/scripts/plugin.js',
       './src/scripts/main.js',
-      './src/scripts/Generator/data/*.js',
+      './src/scripts/data/*.js',
       './src/scripts/Generator/*.js',
       './src/scripts/Generator/CharacterAttributes/*.js',
     ])
@@ -44,15 +44,25 @@ gulp.task('copy', function() {
   .pipe(gulp.dest('./dist/'));
 });
 
+gulp.task('docs', function() {
+  gulp.src([
+    './dist/**'
+  ])
+  .pipe(gulp.dest('./docs/'));
+});
+
 gulp.task('clean', function () {
-    return gulp.src('./dist', {read: false})
+    return gulp.src(['./dist','./docs'], {read: false})
         .pipe(clean());
 });
 
 gulp.task('watch', function () {
   gulp.watch('./src/scss/**/**', ['css']);
   gulp.watch('./src/scripts/**/*.js', ['scripts']);
-  gulp.watch('./src/statics/**/**', ['copy']);
+  gulp.watch('./src/statics/**/**', ['copy','docs']);
 });
 
-gulp.task('default', ['clean','css','scripts','copy']);
+gulp.task('default', ['css','scripts','copy','docs']);
+gulp.task('build',['clean'],function() {
+  gulp.start('default');
+});

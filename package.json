@@ -4,13 +4,13 @@
   "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@github.com:ryanburst/dnd-origins.git"
   },
   "keywords": [],
   "author": "Ryan Burst",
   "license": "ISC",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/ryanburst/dnd-origins/issues"
   },
   "homepage": "",
   "devDependencies": {
