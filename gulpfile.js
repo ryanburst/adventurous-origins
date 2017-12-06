@@ -37,14 +37,14 @@ gulp.task('scripts', function () {
 });
 
 
-gulp.task('copy', function() {
+gulp.task('copy', ['css','scripts'], function() {
   gulp.src([
     './src/statics/**/**'
   ])
   .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('docs', function() {
+gulp.task('docs', ['copy'], function() {
   gulp.src([
     './dist/**'
   ])
