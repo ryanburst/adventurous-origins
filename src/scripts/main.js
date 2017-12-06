@@ -21,6 +21,8 @@ $(document).ready(function() {
     }).log();
 
     render();
+
+    ga('send', 'generate');
   }
 
   function toggleMenu() {
