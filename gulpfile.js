@@ -30,9 +30,9 @@ gulp.task('scripts', function () {
       './src/scripts/Generator/CharacterAttributes/*.js',
     ])
     .pipe(concat('dnd-origins.js'))
-    .pipe(babel({
+    /*.pipe(babel({
       presets: ['es2015']
-    }))
+    }))*/
     .pipe(gulp.dest('./dist/js'));
 });
 

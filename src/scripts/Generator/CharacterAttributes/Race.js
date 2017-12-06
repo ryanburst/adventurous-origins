@@ -14,7 +14,7 @@ class Race extends CharacterAttribute {
    *
    * @constructs Race
    */
-  constructor() {
-    super('race');
+  constructor(options) {
+    super({tableName: 'race', fetch: options.fetch});
   }
 }

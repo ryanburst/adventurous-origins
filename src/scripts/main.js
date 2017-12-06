@@ -1,8 +1,31 @@
 $(document).ready(function() {
   let character = new Character();
-  character.generate().log();
 
-  render();
+  hydrateSelect('#select-class',CharacterClass.options('class'));
+  hydrateSelect('#select-race',CharacterClass.options('race'));
+  hydrateSelect('#select-background',CharacterClass.options('background'));
+  hydrateSelect('#select-charisma',CharacterClass.options('charisma'));
+
+  $('.button--generate').on('click',generate);
+  $('.controls__menu').on('click',toggleMenu);
+
+  generate();
+
+  function generate() {
+    $('body').removeClass('menu-open');
+    character.generate({
+      class: $('#select-class').val(),
+      race: $('#select-race').val(),
+      background: $('#select-background').val(),
+      charisma: $('#select-charisma').val(),
+    }).log();
+
+    render();
+  }
+
+  function toggleMenu() {
+    $('body').toggleClass('menu-open');
+  }
 
   function render() {
     $('#class').html(character.class.toString());
@@ -39,5 +62,13 @@ $(document).ready(function() {
       $('#siblings').append($list);
     }
     character.events.forEach( (event) => $('#life-events').append('<p>' + event.toString() + '</p>') );
+  }
+
+  function hydrateSelect(selector,optionSet) {
+    let $select = $(selector);
+
+    $select.empty().append('<option value="random">Random</option');
+
+    optionSet.forEach( (option) => $select.append('<option>' + option + '</option') );
   }
 });

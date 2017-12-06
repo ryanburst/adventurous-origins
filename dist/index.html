@@ -7,10 +7,52 @@
   <meta name="description" content="D&D Random Background Generator">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <link href="https://fonts.googleapis.com/css?family=Khmer|UnifrakturCook:700|New+Rocker|Raleway:400,400i|Spectral+SC:400,400i,600,700,800" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons|Khmer|UnifrakturCook:700|New+Rocker|Raleway:400,400i|Spectral+SC:400,400i,600,700,800" rel="stylesheet">
   <link rel="stylesheet" href="css/dnd-origins.css">
 </head>
 <body>
+  <div class="controls">
+    <div class="controls__menu">
+      <i class="controls__menu-icon material-icons">menu</i>
+    </div>
+    <div class="controls__options">
+      <div class="attribute">
+        <div class="attribute__cell attribute__cell--label">Class:</div>
+        <div class="attribute__cell attribute__cell--value">
+          <div class="select">
+            <select class="select__input" id="select-class"></select>
+          </div>
+        </div>
+      </div>
+      <div class="attribute">
+        <div class="attribute__cell attribute__cell--label">Race:</div>
+        <div class="attribute__cell attribute__cell--value">
+          <div class="select">
+            <select class="select__input" id="select-race"></select>
+          </div>
+        </div>
+      </div>
+      <div class="attribute">
+        <div class="attribute__cell attribute__cell--label">Background:</div>
+        <div class="attribute__cell attribute__cell--value">
+          <div class="select">
+            <select class="select__input" id="select-background"></select>
+          </div>
+        </div>
+      </div>
+      <div class="attribute">
+        <div class="attribute__cell attribute__cell--label">Charisma Modifier:</div>
+        <div class="attribute__cell attribute__cell--value">
+          <div class="select">
+            <select class="select__input" id="select-charisma"></select>
+          </div>
+        </div>
+      </div>
+      <div class="controls__cta">
+        <button class="button button--generate">Generate</button>
+      </div>
+    </div>
+  </div>
   <div class="wrapper">
     <h1 class="heading">
       <span class="heading__small">Dungeons &amp; Dragons</span>

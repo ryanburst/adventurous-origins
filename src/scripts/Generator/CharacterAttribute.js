@@ -87,6 +87,25 @@ class CharacterAttribute {
   }
 
   /**
+   * Sets the internal fetch method
+   *
+   * @param  {string} fetch Fetching method
+   */
+  set fetch(fetch) {
+    this._fetch = fetch;
+  }
+
+  /**
+   * Getter for fetch, sets default to random. This determines
+   * how the data is fetched from the table.
+   *
+   * @return {string}
+   */
+  get fetch() {
+    return this._fetch || 'random';
+  }
+
+  /**
    * Sets the configuration object for this class.
    * If the passed in value is a string, assume
    * table name and set up an object. Otherwise
@@ -115,6 +134,15 @@ class CharacterAttribute {
    * @return {class}
    */
   generate() {
+    if( this.fetch !== 'random' ) {
+      this.data = this.find(this.fetch);
+    }
+
+    // If data has been found, bail out
+    if( this.data ) {
+      return this;
+    }
+
     if( this.table.roll === 'random' ) {
       this.data = this.randomRow();
     } else {
@@ -122,6 +150,30 @@ class CharacterAttribute {
     }
 
     return this;
+  }
+
+  /**
+   * Finds a table row object by its outcome string. Must
+   * be an exact match for the outcome string value.
+   *
+   * @param  {string} lookup Lookup string value
+   * @return {object}
+   */
+  find(lookup) {
+    let result = false;
+
+    // Make sure numbers get converted to actual numbers
+    if( !isNaN(lookup) ) {
+      lookup = parseInt(lookup);
+    }
+
+    this.table.outcomes.forEach( (outcome) => {
+      if( lookup === outcome.outcome ) {
+        return result = outcome;
+      }
+    });
+
+    return result;
   }
 
   /**
@@ -225,5 +277,15 @@ class CharacterAttribute {
    */
   static toKey(str) {
     return str.replace(/\s/g,'-').toLowerCase();
+  }
+
+  static options(tableName) {
+    let key = CharacterAttribute.toKey(tableName)
+    let table = TABLES[key];
+    let opts = new Set();
+
+    table.outcomes.forEach( (outcome) => opts.add(outcome.outcome) );
+
+    return opts;
   }
 }

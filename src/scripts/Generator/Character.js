@@ -14,11 +14,13 @@ class Character {
    *
    * @return {class}
    */
-  generate() {
-    this.class      = new CharacterClass();
-    this.race       = new Race();
-    this.background = new Background();
-    this.charisma   = new CharismaScore();
+  generate(options) {
+    options = options || {};
+
+    this.class      = new CharacterClass({fetch: options.class});
+    this.race       = new Race({fetch: options.race});
+    this.background = new Background({fetch: options.background});
+    this.charisma   = new CharismaScore({fetch: options.charisma});
     this.age        = new CurrentAge();
     this.birthplace = new Birthplace();
     this.family     = new Family(this.charisma);
