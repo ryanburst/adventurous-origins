@@ -2423,12 +2423,13 @@ var CharacterAttribute = function () {
         // If the keyword is a table, we need to grab a
         // random value from it just as we're doing
         // with this character attribute.
+        var replacement = null;
         if (TABLES[match]) {
           var table = new CharacterAttribute(match);
-          var _replacement = table.toString();
+          replacement = table.toString();
           // Otherwise try a dice roll
         } else {
-          var _replacement2 = Dice.roll(match).get('total');
+          replacement = Dice.roll(match).get('total');
         }
 
         outcome = outcome.replace(/{{(.*?)}}/, replacement);
@@ -2852,15 +2853,13 @@ var BirthOrder = function (_CharacterAttribute5) {
       // actually possible (1 sibling cannot be triplet).
       if (this.data.min === 2) {
         var numSiblings = this.family.numSiblings.toString();
+        var options = ['Twin'];
         // 3 or more siblings can be any one of the options
         if (numSiblings >= 3) {
-          var _options = ['Twin', 'Triplet', 'Quadruplet'];
+          options = ['Twin', 'Triplet', 'Quadruplet'];
           // 2 siblings can be either twin or triplet
         } else if (numSiblings >= 2) {
-          var _options2 = ['Twin', 'Triplet'];
-          // Otherwise we could only have a twin
-        } else {
-          var _options3 = ['Twin'];
+          options = ['Twin', 'Triplet'];
         }
         return options[Math.floor(Math.random() * options.length)];
       }

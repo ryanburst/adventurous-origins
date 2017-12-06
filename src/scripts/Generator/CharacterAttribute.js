@@ -191,12 +191,13 @@ class CharacterAttribute {
       // If the keyword is a table, we need to grab a
       // random value from it just as we're doing
       // with this character attribute.
+      let replacement = null;
       if( TABLES[match] ) {
-        let table       = new CharacterAttribute(match);
-        let replacement = table.toString();
+        let table   = new CharacterAttribute(match);
+        replacement = table.toString();
       // Otherwise try a dice roll
       } else {
-        let replacement = Dice.roll(match).get('total');
+        replacement = Dice.roll(match).get('total');
       }
 
       outcome = outcome.replace(/{{(.*?)}}/,replacement);

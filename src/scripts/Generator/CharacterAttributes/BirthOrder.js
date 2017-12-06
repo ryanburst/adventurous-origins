@@ -34,15 +34,13 @@ class BirthOrder extends CharacterAttribute {
     // actually possible (1 sibling cannot be triplet).
     if( this.data.min === 2 ) {
       let numSiblings = this.family.numSiblings.toString();
+      let options = ['Twin'];
       // 3 or more siblings can be any one of the options
       if( numSiblings >= 3 ) {
-        let options = ['Twin','Triplet','Quadruplet'];
+        options = ['Twin','Triplet','Quadruplet'];
       // 2 siblings can be either twin or triplet
       } else if ( numSiblings >= 2 ) {
-        let options = ['Twin','Triplet'];
-      // Otherwise we could only have a twin
-      } else {
-        let options = ['Twin'];
+        options = ['Twin','Triplet'];
       }
       return options[Math.floor(Math.random() * options.length)];
     }
