@@ -1689,7 +1689,8 @@ const TABLES = {
       {
         "min": 1,
         "max": 10,
-        "outcome": "You nearly died. You have nasty scars on your body, and you are missing an ear, 1d3 fingers, or 1d4 toes."
+        "outcome": "You nearly died. You have nasty scars on your body, and you are missing an ear, 1d3 fingers, or 1d4 toes.",
+        "translate": "You nearly died. You have nasty scars on your body, and you are missing an ear, {{1d3}} fingers, or {{1d4}} toes."
       },
       {
         "min": 11,
@@ -1729,12 +1730,14 @@ const TABLES = {
       {
         "min": 81,
         "max": 90,
-        "outcome": "You found some treasure on your adventure. You have 2d6 gp left from your share of it."
+        "outcome": "You found some treasure on your adventure. You have 2d6 gp left from your share of it.",
+        "translate": "You found some treasure on your adventure. You have {{2d6}}gp left from your share of it."
       },
       {
         "min": 91,
         "max": 99,
-        "outcome": "You found a considerable amount of treasure on your adventure. You have 1d20 + 50 gp left from your share of it."
+        "outcome": "You found a considerable amount of treasure on your adventure. You have 1d20 + 50 gp left from your share of it.",
+        "translate": "You found a considerable amount of treasure on your adventure. You have {{1d20+50}}gp left from your share of it."
       },
       {
         "min": 100,
@@ -1821,7 +1824,8 @@ const TABLES = {
       {
         "min": 4,
         "max": 4,
-        "outcome": "You found some money. You have 1d20 gp in addition to your regular starting funds."
+        "outcome": "You found some money. You have 1d20 gp in addition to your regular starting funds.",
+        "translate": "You found some money. You have {{1d20}}gp in addition to your regular starting funds."
       },
       {
         "min": 5,
@@ -1851,7 +1855,8 @@ const TABLES = {
       {
         "min": 10,
         "max": 10,
-        "outcome": "A distant relative left you a stipend that enables you to live at the comfortable lifestyle for 1d20 years. If you choose to live at a higher lifestyle, you reduce the price of the lifestyle by 2 gp during that time period."
+        "outcome": "A distant relative left you a stipend that enables you to live at the comfortable lifestyle for 1d20 years. If you choose to live at a higher lifestyle, you reduce the price of the lifestyle by 2 gp during that time period.",
+        "translate": "A distant relative left you a stipend that enables you to live at the comfortable lifestyle for {{1d20}} years. If you choose to live at a higher lifestyle, you reduce the price of the lifestyle by 2 gp during that time period."
       }
     ]
   },
@@ -1923,7 +1928,8 @@ const TABLES = {
       {
         "min": 9,
         "max": 12,
-        "outcome": "You were caught and convicted. You spent time in jail, chained to an oar, or performing hard labor. You served a sentence of 1d4 years or succeeded in escaping after that much time."
+        "outcome": "You were caught and convicted. You spent time in jail, chained to an oar, or performing hard labor. You served a sentence of 1d4 years or succeeded in escaping after that much time.",
+        "translate": "You were caught and convicted. You spent time in jail, chained to an oar, or performing hard labor. You served a sentence of {{1d4}} years or succeeded in escaping after that much time."
       }
     ]
   },
@@ -1944,7 +1950,8 @@ const TABLES = {
       {
         "min": 11,
         "max": 15,
-        "outcome": "A devil tempted you. Make a DC 10 Wisdom saving throw. On a failed save, your alignment shifts one step toward evil (if it’s not evil already), and you start the game with an additional 1d20 + 50 gp."
+        "outcome": "A devil tempted you. Make a DC 10 Wisdom saving throw. On a failed save, your alignment shifts one step toward evil (if it’s not evil already), and you start the game with an additional 1d20 + 50 gp.",
+        "translate": "A devil tempted you. Make a DC 10 Wisdom saving throw. On a failed save, your alignment shifts one step toward evil (if it’s not evil already), and you start the game with an additional {{1d20+50}}gp."
       },
       {
         "min": 16,
@@ -2130,7 +2137,8 @@ const TABLES = {
       {
         "min": 1,
         "max": 1,
-        "outcome": "You were turned into a toad and remained in that form for 1d4 weeks."
+        "outcome": "You were turned into a toad and remained in that form for 1d4 weeks.",
+        "translate": "You were turned into a toad and remained in that form for {{1d4}} weeks."
       },
       {
         "min": 2,
@@ -2140,12 +2148,14 @@ const TABLES = {
       {
         "min": 3,
         "max": 3,
-        "outcome": "You were enslaved by a hag, a satyr, or some other being and lived in that creature’s thrall for 1d6 years."
+        "outcome": "You were enslaved by a hag, a satyr, or some other being and lived in that creature’s thrall for 1d6 years.",
+        "translate": "You were enslaved by a hag, a satyr, or some other being and lived in that creature’s thrall for {{1d6}} years."
       },
       {
         "min": 4,
         "max": 4,
-        "outcome": "A dragon held you as a prisoner for 1d4 months until adventurers killed it."
+        "outcome": "A dragon held you as a prisoner for 1d4 months until adventurers killed it.",
+        "translate": "A dragon held you as a prisoner for {{1d4}}} months until adventurers killed it."
       },
       {
         "min": 5,
@@ -2160,7 +2170,8 @@ const TABLES = {
       {
         "min": 7,
         "max": 7,
-        "outcome": "You went insane for 1d6 years and recently regained your sanity. A tic or some other bit of odd behavior might linger."
+        "outcome": "You went insane for 1d6 years and recently regained your sanity. A tic or some other bit of odd behavior might linger.",
+        "translate": "You went insane for {{1d6}} years and recently regained your sanity. A tic or some other bit of odd behavior might linger."
       },
       {
         "min": 8,
