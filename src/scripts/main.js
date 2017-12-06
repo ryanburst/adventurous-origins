@@ -22,7 +22,7 @@ $(document).ready(function() {
 
     render();
 
-    ga('send', 'generate');
+    ga('send', 'event', 'Character', 'generate', 'Launch');
   }
 
   function toggleMenu() {
