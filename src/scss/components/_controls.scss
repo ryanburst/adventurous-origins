@@ -29,6 +29,7 @@
     cursor: pointer;
     z-index: 2;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
     .menu-open & {
       position: relative;
       z-index: 4;

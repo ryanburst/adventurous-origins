@@ -646,6 +646,7 @@ textarea {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .menu-open .controls__menu {
