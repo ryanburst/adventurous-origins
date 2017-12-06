@@ -1344,42 +1344,6 @@ const TABLES = {
       }
     ]
   },
-  "class-decision-druid": {
-    "name": "Druid",
-    "roll": "1d6",
-    "outcomes": [
-      {
-        "min": 1,
-        "max": 1,
-        "outcome": "I saw too much devastation in the wild places, too much of nature’s splendor ruined by the despoilers. I joined a circle of druids to fight back against the enemies of nature."
-      },
-      {
-        "min": 2,
-        "max": 2,
-        "outcome": "I found a place among a group of druids after I fled a catastrophe."
-      },
-      {
-        "min": 3,
-        "max": 3,
-        "outcome": "I have always had an affinity for animals, so I explored my talent to see how I could best use it."
-      },
-      {
-        "min": 4,
-        "max": 4,
-        "outcome": "I befriended a druid and was moved by druidic teachings. I decided to follow my friend’s guidance and give something back to the world."
-      },
-      {
-        "min": 5,
-        "max": 5,
-        "outcome": "While I was growing up, I saw spirits all around me — entities no one else could perceive. I sought out the druids to help me understand the visions and communicate with these beings."
-      },
-      {
-        "min": 6,
-        "max": 6,
-        "outcome": "I have always felt disgust for creatures of unnatural origin. For this reason, I immersed myself in the study of the druidic mysteries and became a champion of the natural order."
-      }
-    ]
-  },
   "class-decision-fighter": {
     "name": "Fighter",
     "roll": "1d6",
@@ -1734,7 +1698,12 @@ const TABLES = {
       {
         "min": 31,
         "max": 40,
-        "outcome": "You made an enemy of an adventurer. Roll a d6. An odd number indicates you are to blame for the rift, and an even number indicates you are blameless. Use the supplemental tables and work with your DM to determine this hostile character’s identity and the danger this enemy poses to you."
+        "outcome": "You made an enemy of an adventurer. Roll a d6. An odd number indicates you are to blame for the rift, and an even number indicates you are blameless. Use the supplemental tables and work with your DM to determine this hostile character’s identity and the danger this enemy poses to you.",
+        "translate": "You made an enemy of an adventurer. {{extra}} Use the supplemental tables and work with your DM to determine this hostile character’s identity and the danger this enemy poses to you.",
+        "extra": function() {
+          let roll = Dice.roll('1d6').get('total');
+          return 'You are ' + (roll % 2 == 0 ? 'not ' : '') + 'to blame for the rift.'
+        }
       },
       {
         "min": 41,
@@ -2087,7 +2056,13 @@ const TABLES = {
       {
         "min": 71,
         "max": 75,
-        "outcome": "You were briefly possessed. Roll a d6 to determine what type of creature possessed you: 1, celestial; 2, devil; 3, demon; 4, fey; 5, elemental; 6, undead."
+        "outcome": "You were briefly possessed. Roll a d6 to determine what type of creature possessed you: 1, celestial; 2, devil; 3, demon; 4, fey; 5, elemental; 6, undead.",
+        "translate": "You were briefly possessed by {{extra}}",
+        "extra": function() {
+          let roll = Dice.roll('1d6').get('total');
+          let choices = ['a celestial','a devil','a demon','a fey','an elemental','an undead being'];
+          return 'You are ' + choices[roll-1] + 'to blame for the rift.'
+        }
       },
       {
         "min": 76,
@@ -2169,7 +2144,12 @@ const TABLES = {
       {
         "min": 11,
         "max": 11,
-        "outcome": "A romantic relationship ended. Roll a d6. An odd number means it ended with bad feelings, while an even number means it ended amicably."
+        "outcome": "A romantic relationship ended. Roll a d6. An odd number means it ended with bad feelings, while an even number means it ended amicably.",
+        "translate": "A romantic relationship ended. {{extra}}",
+        "extra": function() {
+          let roll = Dice.roll('1d6').get('total');
+          return 'It ended ' + (roll % 2 == 0 ? 'amicably.' : 'with bad feelings.')
+        }
       },
       {
         "min": 12,
@@ -3074,6 +3054,8 @@ class CharacterAttribute {
       if( TABLES[match] ) {
         let table   = new CharacterAttribute(match);
         replacement = table.toString();
+      } else if( match === 'extra' && this.data.extra ) {
+        replacement = this.data.extra();
       // Otherwise try a dice roll
       } else {
         replacement = Dice.roll(match).get('total');

@@ -601,6 +601,63 @@ textarea {
   letter-spacing: -3px;
 }
 
+.button {
+  border: 10px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: inline-block;
+  font-family: Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  margin: 0px;
+  padding: 0px;
+  outline: none;
+  font-size: inherit;
+  font-weight: inherit;
+  position: relative;
+  height: 36px;
+  width: 100%;
+  line-height: 36px;
+  border-radius: 2px;
+  -webkit-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  background-color: white;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: #efefef;
+}
+
+.select {
+  position: relative;
+}
+
+.select:after {
+  content: "arrow_drop_down";
+  position: absolute;
+  display: inline-block;
+  top: 0px;
+  right: 2px;
+  font-family: "Material Icons";
+  font-size: 23px;
+}
+
+.select__input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 0;
+  border: 1px solid #dbdbdb;
+  background-color: white;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+
+/*!
+========== SPECIFICS
+*/
 .controls {
   position: absolute;
   top: 0;
@@ -728,77 +785,38 @@ body.menu-open {
   overflow: hidden;
 }
 
-.button {
-  border: 10px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  display: inline-block;
-  font-family: Roboto, sans-serif;
-  -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
-  text-decoration: none;
-  margin: 0px;
-  padding: 0px;
-  outline: none;
-  font-size: inherit;
-  font-weight: inherit;
-  position: relative;
-  height: 36px;
-  width: 100%;
-  line-height: 36px;
-  border-radius: 2px;
-  -webkit-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
-  transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
-  background-color: white;
-  text-align: center;
-}
-
-.button:hover {
-  background-color: #efefef;
-}
-
-.select {
-  position: relative;
-}
-
-.select:after {
-  content: "arrow_drop_down";
-  position: absolute;
-  display: inline-block;
-  top: 0px;
-  right: 2px;
-  font-family: "Material Icons";
-  font-size: 23px;
-}
-
-.select__input {
-  width: 100%;
-  padding: 5px 10px;
-  border-radius: 0;
-  border: 1px solid #dbdbdb;
-  background-color: white;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-}
-
-/*!
-========== SPECIFICS
-*/
 .character {
   width: 100%;
 }
 
 .attribute {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   margin-bottom: 8px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 @media only screen and (min-width: 450px) {
   .attribute {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
   }
+}
+
+.attribute--no-break {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .attribute__cell {
@@ -817,6 +835,10 @@ body.menu-open {
   .attribute__cell--label {
     width: 200px;
   }
+}
+
+.attribute--no-break .attribute__cell--label {
+  padding-right: 10px;
 }
 
 .attribute__cell--value {

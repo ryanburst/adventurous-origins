@@ -245,6 +245,8 @@ class CharacterAttribute {
       if( TABLES[match] ) {
         let table   = new CharacterAttribute(match);
         replacement = table.toString();
+      } else if( match === 'extra' && this.data.extra ) {
+        replacement = this.data.extra();
       // Otherwise try a dice roll
       } else {
         replacement = Dice.roll(match).get('total');

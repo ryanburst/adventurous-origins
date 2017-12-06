@@ -1,7 +1,14 @@
 .attribute {
+  display: flex;
   margin-bottom: 8px;
+  flex-direction: column;
   @media #{$screen-sm-viewport} {
-    display: flex;
+    flex-direction: row;
+  }
+  &--no-break {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
   &__cell {
     vertical-align: top;
@@ -13,10 +20,14 @@
       @media #{$screen-sm-viewport} {
         width: 200px;
       }
+      .attribute--no-break & {
+        padding-right: 10px;
+      }
     }
     &--value {
       flex-grow: 1;
     }
+
     p {
       margin-top: 0;
       margin-bottom: 5px;
