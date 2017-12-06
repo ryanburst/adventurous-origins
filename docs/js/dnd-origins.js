@@ -2162,6 +2162,16 @@ var TABLES = (_TABLES = {
   }]
 }), _TABLES);
 
+/**
+ * Base character generation class. Generates all of the
+ * attributes of a character needed by instantiating
+ * character attribute classes.
+ *
+ * @class
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
 var Character = function () {
   function Character() {
     _classCallCheck(this, Character);
@@ -2169,6 +2179,13 @@ var Character = function () {
 
   _createClass(Character, [{
     key: 'generate',
+
+    /**
+     * Sets all character properties by instantiating other classes.
+     * These classes will randomly pull from data tables.
+     *
+     * @return {class}
+     */
     value: function generate() {
       this.class = new CharacterClass();
       this.race = new Race();
@@ -2181,15 +2198,32 @@ var Character = function () {
 
       return this.adventure();
     }
+
+    /**
+     * Sends the character on an adventure to gain life events.
+     *
+     * @return {class}
+     */
+
   }, {
     key: 'adventure',
     value: function adventure() {
       var numEvents = Dice.roll(this.age.getLifeEventDice()).get('total');
+
+      // Generate a new life event
       for (var x = 0; x < numEvents; x++) {
         this.events.add(new LifeEvent());
       }
+
       return this;
     }
+
+    /**
+     * Debug function that will output the results to the console.
+     *
+     * @return {class}
+     */
+
   }, {
     key: 'log',
     value: function log() {
@@ -2229,7 +2263,25 @@ var Character = function () {
   return Character;
 }();
 
+/**
+ * Represents a character attribute. This class will
+ * automatically pull a random value from a
+ * corresponding data table.
+ *
+ * @class
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var CharacterAttribute = function () {
+  /**
+   * Takes in a configuration object and then
+   * generates the random associated value.
+   *
+   * @constructs CharacterAttribute
+   * @param config
+   */
   function CharacterAttribute(config) {
     _classCallCheck(this, CharacterAttribute);
 
@@ -2238,8 +2290,28 @@ var CharacterAttribute = function () {
     this.generate();
   }
 
+  /**
+   * Setter for the config property. Goes through
+   * the config object and sets a property for
+   * each key and value pair.
+   *
+   * @param  {object} config Configuration object
+   */
+
+
   _createClass(CharacterAttribute, [{
     key: 'setConfig',
+
+
+    /**
+     * Sets the configuration object for this class.
+     * If the passed in value is a string, assume
+     * table name and set up an object. Otherwise
+     * just set the object as normal.
+     *
+     * @param  {mixed} config Table name string or object
+     * @return {class}
+     */
     value: function setConfig(config) {
       if (typeof config === 'string') {
         this.config = {
@@ -2248,23 +2320,50 @@ var CharacterAttribute = function () {
       } else {
         this.config = config;
       }
+
       return this;
     }
+
+    /**
+     * Pulls in data from the corresponding table.
+     * Depending on the table, it can either be
+     * random or rolled for.
+     *
+     * @return {class}
+     */
+
   }, {
     key: 'generate',
     value: function generate() {
       if (this.table.roll === 'random') {
-        return this.data = this.randomRow();
+        this.data = this.randomRow();
+      } else {
+        this.data = this.rollForRow();
       }
 
-      return this.data = this.rollForRow();
+      return this;
     }
+
+    /**
+     * Grabs a random result from the table.
+     *
+     * @return {object}
+     */
+
   }, {
     key: 'randomRow',
     value: function randomRow() {
       this.rollResult = Math.floor(Math.random() * this.table.outcomes.length);
       return this.table.outcomes[this.rollResult];
     }
+
+    /**
+     * Makes a roll for determining which value to return
+     * from the data table. The number must be between
+     * the min and max value in the data table.
+     * @return {object}
+     */
+
   }, {
     key: 'rollForRow',
     value: function rollForRow() {
@@ -2281,35 +2380,83 @@ var CharacterAttribute = function () {
 
       return result;
     }
+
+    /**
+     * Rolls the dice associated with this data table.
+     *
+     * @param  {string} dice Dice to roll for result
+     * @return {object}
+     */
+
   }, {
     key: 'roll',
     value: function roll(dice) {
+      // If a roll modifier has been set, replace the "MOD"
+      // key word with the value of the modifier before
+      // we roll for a result. (1d4+MOD => 1d4+5)
       if (typeof this.rollModifier !== 'undefined') {
         dice = dice.replace("MOD", this.rollModifier);
       }
 
       return Dice.roll(dice);
     }
+
+    /**
+     * Translates an outcome string. This occurs when
+     * an outcome string asks the player to roll
+     * additional information in another table.
+     *
+     * @param  {string} outcome Outcome to translate
+     * @return {string}
+     */
+
   }, {
     key: 'translateOutcome',
     value: function translateOutcome(outcome) {
+      // Match any {{keyword}} string
       var matches = outcome.match(/({{(.*?)}})+/g);
+
       for (var x in matches) {
+        // Remove the brackets so we have just the keyword
         var match = matches[x].replace(/[{{}}]/g, '');
+
+        // If the keyword is a table, we need to grab a
+        // random value from it just as we're doing
+        // with this character attribute.
         if (TABLES[match]) {
           var table = new CharacterAttribute(match);
-          outcome = outcome.replace(/{{(.*?)}}/, table.toString());
+          var _replacement = table.toString();
+          // Otherwise try a dice roll
         } else {
-          outcome = outcome.replace(/{{(.*?)}}/, Dice.roll(match).get('total'));
+          var _replacement2 = Dice.roll(match).get('total');
         }
+
+        outcome = outcome.replace(/{{(.*?)}}/, replacement);
       }
+
       return outcome;
     }
+
+    /**
+     * Return the outcome value from the table data.
+     *
+     * @return {string}
+     */
+
   }, {
     key: 'toString',
     value: function toString() {
       return this.data.outcome;
     }
+
+    /**
+     * Converts a string to key format by replacing all
+     * spaces with dashes and lowercasing everything.
+     *
+     * @param  {string} str String to convert to key format
+     * @return {string}
+     */
+
   }, {
     key: 'config',
     set: function set(config) {
@@ -2319,19 +2466,51 @@ var CharacterAttribute = function () {
       Object.keys(config).forEach(function (prop) {
         return _this2[prop] = config[prop];
       });
-    },
+    }
+
+    /**
+     * Getter for internal config property.
+     *
+     * @return {object}
+     */
+    ,
     get: function get() {
       return this._config;
     }
+
+    /**
+     * Sets the internal property for table name, making
+     * sure to convert it to a key format. Also sets the
+     * proper table from the data set.
+     *
+     * @param  {string} tableName Name of table
+     */
+
   }, {
     key: 'tableName',
     set: function set(tableName) {
       this._tableName = CharacterAttribute.toKey(tableName);
       this.table = TABLES[this.tableName];
-    },
+    }
+
+    /**
+     * Getter for internal table name property.
+     *
+     * @return {string}
+     */
+    ,
     get: function get() {
       return this._tableName;
     }
+
+    /**
+     * Sets the table data to the data property. If an
+     * outcome needs to be "translated", runs the
+     * translation method on the string.
+     *
+     * @param  {object} data Table data
+     */
+
   }, {
     key: 'data',
     set: function set(data) {
@@ -2341,7 +2520,14 @@ var CharacterAttribute = function () {
       } else {
         data.outcome = this.translateOutcome(data.outcome);
       }
-    },
+    }
+
+    /**
+     * Getter for internal data property.
+     *
+     * @return {object}
+     */
+    ,
     get: function get() {
       return this._data;
     }
@@ -2355,6 +2541,17 @@ var CharacterAttribute = function () {
   return CharacterAttribute;
 }();
 
+/**
+ * Basic dice rolling class that turns a string
+ * into an actual roll. Accepts strings like
+ * "2d20" or "4d6+5".
+ *
+ * @class
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var Dice = function () {
   function Dice() {
     _classCallCheck(this, Dice);
@@ -2362,6 +2559,24 @@ var Dice = function () {
 
   _createClass(Dice, null, [{
     key: 'roll',
+
+    /**
+     * Main method of this class. Takes a dice string,
+     * turns it into actual numbers, and returns a
+     * result as a broken up object.
+     *
+     * {
+     *   input: <original string>,
+     *   num: <number of rolls>,
+     *   dice: <what kind of dice to roll>,
+     *   results: <array of results for each roll>,
+     *   modifier: <object with mod type and value>,
+     *   total: <total value>
+     * }
+     *
+     * @param  {string} input Dice string (2d4+5)
+     * @return {object}
+     */
     value: function roll(input) {
       var parsed = Dice.addDice(Dice.parse(input));
 
@@ -2371,24 +2586,73 @@ var Dice = function () {
 
       return parsed;
     }
+
+    /**
+     * Parses an input string and breaks it out into an
+     * object. This object has the number of rolls,
+     * the dice to roll, and any modifiers that
+     * need to be applied after the roll.
+     *
+     * @param  {string} input String to parse
+     * @return {object}
+     */
+
+  }, {
+    key: 'parse',
+    value: function parse(input) {
+      var reg = new RegExp("([1-9]\\d*)?d([1-9]\\d*)([/\*+-].+)?");
+      var matches = reg.exec(input.replace(/\s/g, ''));
+      var parsed = new Map([['input', matches[0]], ['num', typeof matches[1] === 'undefined' ? 1 : matches[1]], ['dice', matches[2]], ['results', new Set()], ['total', 0]]);
+
+      // fourth match is the modifier (+5|-2|+CHA)
+      if (typeof matches[3] !== 'undefined') {
+        parsed.set('modifier', new Map([['type', matches[3].slice(0, 1)], ['mod', Number(matches[3].slice(1))]]));
+      }
+
+      return parsed;
+    }
+
+    /**
+     * Loops through the all of the dice rolls and
+     * adds them all together to get a total
+     * Records results in result array.
+     * The results get added to the
+     * passed in parsed object.
+     *
+     * @param  {object} parsed Parsed input
+     * @return {object}
+     */
+
   }, {
     key: 'addDice',
     value: function addDice(parsed) {
       var numDice = parsed.get('num');
       var sides = parsed.get('dice');
 
-      for (var x = 0; x < numDice; x++) {
+      for (var i = 0; i < numDice; i++) {
         var roll = Math.floor(Math.random() * sides) + 1;
         parsed.get('results').add(roll);
         parsed.set('total', parsed.get('total') + roll);
       }
+
       return parsed;
     }
+
+    /**
+     * Applies the modifier to the total. The parsed
+     * modifier is broken out into the type of
+     * modifier (+-/*) and the actual mod.
+     *
+     * @param  {object} parsed Parsed input
+     * @return {object}
+     */
+
   }, {
     key: 'applyModifier',
     value: function applyModifier(parsed) {
       var total = parsed.get('total');
-      var modifier = parsed.get('modifier');
+      var type = parsed.get('modifier').get('type');
+      var modifier = parsed.get('modifier').get('mod');
       var operators = {
         '+': function _(a, b) {
           return a + b;
@@ -2404,18 +2668,11 @@ var Dice = function () {
         }
       };
 
-      return parsed.set('total', operators[modifier.get('type')](total, modifier.get('mod')));
-    }
-  }, {
-    key: 'parse',
-    value: function parse(input) {
-      var reg = new RegExp("([1-9]\\d*)?d([1-9]\\d*)([/\*+-].+)?");
-      var matches = reg.exec(input.replace(/\s/g, ''));
-      var parsed = new Map([['input', matches[0]], ['num', typeof matches[1] === 'undefined' ? 1 : matches[1]], ['dice', matches[2]], ['results', new Set()], ['total', 0]]);
-
-      // fourth match is the modifier (+5|-2|+CHA)
-      if (typeof matches[3] !== 'undefined') {
-        parsed.set('modifier', new Map([['type', matches[3].slice(0, 1)], ['mod', Number(matches[3].slice(1))]]));
+      // Only update the total if the modifier is a number.
+      // It could be a string representing an abstract
+      // number that will be applied in other ways.
+      if (Number.isInteger(modifier)) {
+        parsed.set('total', operators[type](total, modifier));
       }
 
       return parsed;
@@ -2425,18 +2682,26 @@ var Dice = function () {
   return Dice;
 }();
 
-var Sibling = function Sibling() {
-  _classCallCheck(this, Sibling);
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
 
-  this.occupation = new Occupation('occupation');
-  this.alignment = new Alignment('alignment');
-  this.status = new Status('status');
-  this.relationship = new Relationship('relationship');
-};
 
 var AbsentParent = function (_CharacterAttribute) {
   _inherits(AbsentParent, _CharacterAttribute);
 
+  /**
+   * Passes table name to super class
+   *
+   * @constructs AbsentParent
+   */
   function AbsentParent() {
     _classCallCheck(this, AbsentParent);
 
@@ -2446,9 +2711,26 @@ var AbsentParent = function (_CharacterAttribute) {
   return AbsentParent;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var Alignment = function (_CharacterAttribute2) {
   _inherits(Alignment, _CharacterAttribute2);
 
+  /**
+   * Passes table name to super class
+   *
+   * @constructs Alignment
+   */
   function Alignment() {
     _classCallCheck(this, Alignment);
 
@@ -2458,9 +2740,27 @@ var Alignment = function (_CharacterAttribute2) {
   return Alignment;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var Background = function (_CharacterAttribute3) {
   _inherits(Background, _CharacterAttribute3);
 
+  /**
+   * Passes table name to super class. Also
+   * creates a sub background property.
+   *
+   * @constructs Background
+   */
   function Background() {
     _classCallCheck(this, Background);
 
@@ -2473,42 +2773,98 @@ var Background = function (_CharacterAttribute3) {
   return Background;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var BackgroundDecision = function (_CharacterAttribute4) {
   _inherits(BackgroundDecision, _CharacterAttribute4);
 
-  function BackgroundDecision(parentClass) {
+  /**
+   * Passes table name to super class. Uses the passed in
+   * background class to determine the final class name.
+   *
+   * @constructs BackgroundDecision
+   * @param {class} background Background
+   */
+  function BackgroundDecision(background) {
     _classCallCheck(this, BackgroundDecision);
 
-    return _possibleConstructorReturn(this, (BackgroundDecision.__proto__ || Object.getPrototypeOf(BackgroundDecision)).call(this, 'background-decision-' + parentClass.toString()));
+    return _possibleConstructorReturn(this, (BackgroundDecision.__proto__ || Object.getPrototypeOf(BackgroundDecision)).call(this, 'background-decision-' + background.toString()));
   }
 
   return BackgroundDecision;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var BirthOrder = function (_CharacterAttribute5) {
   _inherits(BirthOrder, _CharacterAttribute5);
 
-  function BirthOrder() {
+  /**
+   * Passes table name to super class
+   *
+   * @constructs BirthOrder
+   * @param {class} family Family class
+   */
+  function BirthOrder(family) {
     _classCallCheck(this, BirthOrder);
 
-    return _possibleConstructorReturn(this, (BirthOrder.__proto__ || Object.getPrototypeOf(BirthOrder)).call(this, 'birth-order'));
+    var _this7 = _possibleConstructorReturn(this, (BirthOrder.__proto__ || Object.getPrototypeOf(BirthOrder)).call(this, 'birth-order'));
+
+    _this7.family = family;
+    return _this7;
   }
+
+  /**
+   * Overrides the parent toString method under
+   * certain circumstances to determine the
+   * correct string.
+   *
+   * @return {string}
+   */
+
 
   _createClass(BirthOrder, [{
     key: 'toString',
     value: function toString() {
+      // If this is the row that says "Twin, triplet, or Quadruplet",
+      // use the family class to find out how many siblings this
+      // character has to determine which of that string is
+      // actually possible (1 sibling cannot be triplet).
       if (this.data.min === 2) {
         var numSiblings = this.family.numSiblings.toString();
+        // 3 or more siblings can be any one of the options
         if (numSiblings >= 3) {
           var _options = ['Twin', 'Triplet', 'Quadruplet'];
-          return _options[Math.floor(Math.random() * _options.length)];
+          // 2 siblings can be either twin or triplet
         } else if (numSiblings >= 2) {
           var _options2 = ['Twin', 'Triplet'];
+          // Otherwise we could only have a twin
         } else {
           var _options3 = ['Twin'];
         }
         return options[Math.floor(Math.random() * options.length)];
       }
+
       return _get(BirthOrder.prototype.__proto__ || Object.getPrototypeOf(BirthOrder.prototype), 'toString', this).call(this);
     }
   }]);
@@ -2516,9 +2872,26 @@ var BirthOrder = function (_CharacterAttribute5) {
   return BirthOrder;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var Birthplace = function (_CharacterAttribute6) {
   _inherits(Birthplace, _CharacterAttribute6);
 
+  /**
+   * Passes table name to super class
+   *
+   * @constructs Birthplace
+   */
   function Birthplace() {
     _classCallCheck(this, Birthplace);
 
@@ -2528,9 +2901,27 @@ var Birthplace = function (_CharacterAttribute6) {
   return Birthplace;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var CharacterClass = function (_CharacterAttribute7) {
   _inherits(CharacterClass, _CharacterAttribute7);
 
+  /**
+   * Passes table name to super class. Also creates
+   * a sub character class property.
+   *
+   * @constructs CharacterClass
+   */
   function CharacterClass() {
     _classCallCheck(this, CharacterClass);
 
@@ -2543,9 +2934,26 @@ var CharacterClass = function (_CharacterAttribute7) {
   return CharacterClass;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var CharismaScore = function (_CharacterAttribute8) {
   _inherits(CharismaScore, _CharacterAttribute8);
 
+  /**
+   * Passes table name to super class
+   *
+   * @constructs CharismaScore
+   */
   function CharismaScore() {
     _classCallCheck(this, CharismaScore);
 
@@ -2555,9 +2963,29 @@ var CharismaScore = function (_CharacterAttribute8) {
   return CharismaScore;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var ChildhoodHome = function (_CharacterAttribute9) {
   _inherits(ChildhoodHome, _CharacterAttribute9);
 
+  /**
+   * Passes table name and roll modifier to super class.
+   * The roll modifier is used to adjust the random
+   * dice roll for a corresponding row.
+   *
+   * @constructs ChildhoodHome
+   * @param {integer} lifestyleMod Roll modifier
+   */
   function ChildhoodHome(lifestyleMod) {
     _classCallCheck(this, ChildhoodHome);
 
@@ -2567,9 +2995,29 @@ var ChildhoodHome = function (_CharacterAttribute9) {
   return ChildhoodHome;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var ChildhoodMemory = function (_CharacterAttribute10) {
   _inherits(ChildhoodMemory, _CharacterAttribute10);
 
+  /**
+   * Passes table name and roll modifier to super class.
+   * The roll modifier is used to adjust the random
+   * dice roll for a corresponding row.
+   *
+   * @constructs ChildhoodMemory
+   * @param {integer} charismaMod Roll modifier
+   */
   function ChildhoodMemory(charismaMod) {
     _classCallCheck(this, ChildhoodMemory);
 
@@ -2579,26 +3027,71 @@ var ChildhoodMemory = function (_CharacterAttribute10) {
   return ChildhoodMemory;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var ClassDecision = function (_CharacterAttribute11) {
   _inherits(ClassDecision, _CharacterAttribute11);
 
-  function ClassDecision(parentClass) {
+  /**
+   * Passes table name to super class. Uses the passed in
+   * background class to determine the final class name.
+   *
+   * @constructs ClassDecision
+   * @param {class} characterClass Character class
+   */
+  function ClassDecision(characterClass) {
     _classCallCheck(this, ClassDecision);
 
-    return _possibleConstructorReturn(this, (ClassDecision.__proto__ || Object.getPrototypeOf(ClassDecision)).call(this, 'class-decision-' + parentClass.toString()));
+    return _possibleConstructorReturn(this, (ClassDecision.__proto__ || Object.getPrototypeOf(ClassDecision)).call(this, 'class-decision-' + characterClass.toString()));
   }
 
   return ClassDecision;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var CurrentAge = function (_CharacterAttribute12) {
   _inherits(CurrentAge, _CharacterAttribute12);
 
+  /**
+   * Passes table name to super class
+   *
+   * @constructs CurrentAge
+   */
   function CurrentAge() {
     _classCallCheck(this, CurrentAge);
 
     return _possibleConstructorReturn(this, (CurrentAge.__proto__ || Object.getPrototypeOf(CurrentAge)).call(this, 'current-age'));
   }
+
+  /**
+   * Helper method to retrieve extra data from the
+   * table. Grabs the number of life events that
+   * correspond with this age group.
+   *
+   * @return {integer}
+   */
+
 
   _createClass(CurrentAge, [{
     key: 'getLifeEventDice',
@@ -2610,9 +3103,30 @@ var CurrentAge = function (_CharacterAttribute12) {
   return CurrentAge;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var Family = function (_CharacterAttribute13) {
   _inherits(Family, _CharacterAttribute13);
 
+  /**
+   * Passes table name to super class and generates
+   * more family attributes. The charisma modifier
+   * is used to generate a corresponding
+   * childhood memory.
+   *
+   * @constructs Family
+   * @param {integer} charisma Charisma modifier
+   */
   function Family(charisma) {
     _classCallCheck(this, Family);
 
@@ -2624,43 +3138,89 @@ var Family = function (_CharacterAttribute13) {
     return _this15;
   }
 
+  /**
+   * Generates parents (who raised them) and the
+   * fate of any absent parents.
+   *
+   * @return {class}
+   */
+
+
   _createClass(Family, [{
     key: 'generateParents',
     value: function generateParents() {
       this.parents = new Parents();
+
+      // If one or more parents are "absent", determine
+      // their fate (dead, alive, etc).
       if (this.hasAbsentParent()) {
         this.parentalFate = new Set();
         for (var i = 0; i < this.data.absentCount; i++) {
           this.parentalFate.add(new AbsentParent());
         }
       }
+
       return this;
     }
+
+    /**
+     * Generates siblings. Siblings have basic information,
+     * like occupation, status and relationship.
+     *
+     * @return {class}
+     */
+
   }, {
     key: 'generateSiblings',
     value: function generateSiblings() {
       this.numSiblings = new NumberOfSiblings();
+
       if (this.hasSiblings()) {
         this.siblings = new Set();
         for (var i = 0; i < this.numSiblings.toString(); i++) {
           this.siblings.add(new Sibling());
         }
       }
+
       return this;
     }
+
+    /**
+     * Generates a few more home life, family related
+     * character attributes.
+     *
+     * @param  {integer} charisma Charisma mod
+     * @return {class}
+     */
+
   }, {
     key: 'generateHomeLife',
     value: function generateHomeLife(charisma) {
       this.lifestyle = new FamilyLifestyle();
       this.childhoodHome = new ChildhoodHome(this.lifestyle.mod);
       this.childhoodMemory = new ChildhoodMemory(charisma.toString());
+
       return this;
     }
+
+    /**
+     * Checks to see if there are any absent parents.
+     *
+     * @return {Boolean}
+     */
+
   }, {
     key: 'hasAbsentParent',
     value: function hasAbsentParent() {
       return this.data.absentCount > 0;
     }
+
+    /**
+     * Checks to see if this character has any siblings.
+     *
+     * @return {Boolean}
+     */
+
   }, {
     key: 'hasSiblings',
     value: function hasSiblings() {
@@ -2671,14 +3231,40 @@ var Family = function (_CharacterAttribute13) {
   return Family;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var FamilyLifestyle = function (_CharacterAttribute14) {
   _inherits(FamilyLifestyle, _CharacterAttribute14);
 
+  /**
+   * Passes table name to super class
+   *
+   * @constructs FamilyLifestyle
+   */
   function FamilyLifestyle() {
     _classCallCheck(this, FamilyLifestyle);
 
     return _possibleConstructorReturn(this, (FamilyLifestyle.__proto__ || Object.getPrototypeOf(FamilyLifestyle)).call(this, 'family-lifestyle'));
   }
+
+  /**
+   * Getter for retrieving extra data from the table.
+   * Grabs the modifier number the rolled lifestyle
+   * will grant the character.
+   *
+   * @return {integer}
+   */
+
 
   _createClass(FamilyLifestyle, [{
     key: 'mod',
@@ -2690,9 +3276,26 @@ var FamilyLifestyle = function (_CharacterAttribute14) {
   return FamilyLifestyle;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var LifeEvent = function (_CharacterAttribute15) {
   _inherits(LifeEvent, _CharacterAttribute15);
 
+  /**
+   * Passes table name to super class
+   *
+   * @constructs LifeEvent
+   */
   function LifeEvent() {
     _classCallCheck(this, LifeEvent);
 
@@ -2702,9 +3305,27 @@ var LifeEvent = function (_CharacterAttribute15) {
   return LifeEvent;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var NumberOfSiblings = function (_CharacterAttribute16) {
   _inherits(NumberOfSiblings, _CharacterAttribute16);
 
+  /**
+   * Passes table name to super class and sets the
+   * actual number of siblings.
+   *
+   * @constructs NumberOfSiblings
+   */
   function NumberOfSiblings() {
     _classCallCheck(this, NumberOfSiblings);
 
@@ -2714,11 +3335,29 @@ var NumberOfSiblings = function (_CharacterAttribute16) {
     return _this18;
   }
 
+  /**
+   * This table returns a dice roll as a result, so
+   * we need to convert that dice roll to an
+   * actual number of siblings.
+   *
+   * @param  {string} siblingDice Dice to roll
+   * @return {integer}
+   */
+
+
   _createClass(NumberOfSiblings, [{
     key: 'generateSiblingNum',
     value: function generateSiblingNum(siblingDice) {
       return siblingDice !== 'None' ? Dice.roll(siblingDice).get('total') : 0;
     }
+
+    /**
+     * Instead of returning the outcome from the table,
+     * return the generated number of siblings.
+     *
+     * @return {integer}
+     */
+
   }, {
     key: 'toString',
     value: function toString() {
@@ -2729,9 +3368,26 @@ var NumberOfSiblings = function (_CharacterAttribute16) {
   return NumberOfSiblings;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var Occupation = function (_CharacterAttribute17) {
   _inherits(Occupation, _CharacterAttribute17);
 
+  /**
+   * Passes table name to super class
+   *
+   * @constructs Occupation
+   */
   function Occupation() {
     _classCallCheck(this, Occupation);
 
@@ -2741,9 +3397,26 @@ var Occupation = function (_CharacterAttribute17) {
   return Occupation;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var Parents = function (_CharacterAttribute18) {
   _inherits(Parents, _CharacterAttribute18);
 
+  /**
+   * Passes table name to super class
+   *
+   * @constructs Parents
+   */
   function Parents() {
     _classCallCheck(this, Parents);
 
@@ -2753,9 +3426,26 @@ var Parents = function (_CharacterAttribute18) {
   return Parents;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var Race = function (_CharacterAttribute19) {
   _inherits(Race, _CharacterAttribute19);
 
+  /**
+   * Passes table name to super class
+   *
+   * @constructs Race
+   */
   function Race() {
     _classCallCheck(this, Race);
 
@@ -2765,9 +3455,26 @@ var Race = function (_CharacterAttribute19) {
   return Race;
 }(CharacterAttribute);
 
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var Relationship = function (_CharacterAttribute20) {
   _inherits(Relationship, _CharacterAttribute20);
 
+  /**
+   * Passes table name to super class
+   *
+   * @constructs Relationship
+   */
   function Relationship() {
     _classCallCheck(this, Relationship);
 
@@ -2777,9 +3484,50 @@ var Relationship = function (_CharacterAttribute20) {
   return Relationship;
 }(CharacterAttribute);
 
+/**
+ * Sibling for a character
+ *
+ * @class
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
+var Sibling =
+/**
+ * Generates some random information about a sibling.
+ *
+ * @constructs Sibling
+ */
+function Sibling() {
+  _classCallCheck(this, Sibling);
+
+  this.occupation = new Occupation('occupation');
+  this.alignment = new Alignment('alignment');
+  this.status = new Status('status');
+  this.relationship = new Relationship('relationship');
+};
+
+/**
+ * Simple character attribute class representation.
+ * Sends in the corresponding table name to its
+ * parent class so it pulls the correct data.
+ *
+ * @class
+ * @extends CharacterAttribute
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
+
+
 var Status = function (_CharacterAttribute21) {
   _inherits(Status, _CharacterAttribute21);
 
+  /**
+   * Passes table name to super class
+   *
+   * @constructs Status
+   */
   function Status() {
     _classCallCheck(this, Status);
 

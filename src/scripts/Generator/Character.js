@@ -1,4 +1,19 @@
+/**
+ * Base character generation class. Generates all of the
+ * attributes of a character needed by instantiating
+ * character attribute classes.
+ *
+ * @class
+ * @author  Ryan Burst <ryanburst@gmail.com>
+ * @version 0.1.0
+ */
 class Character {
+  /**
+   * Sets all character properties by instantiating other classes.
+   * These classes will randomly pull from data tables.
+   *
+   * @return {class}
+   */
   generate() {
     this.class      = new CharacterClass();
     this.race       = new Race();
@@ -12,14 +27,27 @@ class Character {
     return this.adventure();
   }
 
+  /**
+   * Sends the character on an adventure to gain life events.
+   *
+   * @return {class}
+   */
   adventure() {
     let numEvents = Dice.roll(this.age.getLifeEventDice()).get('total');
+
+    // Generate a new life event
     for(let x=0; x<numEvents; x++) {
       this.events.add(new LifeEvent());
     }
+
     return this;
   }
 
+  /**
+   * Debug function that will output the results to the console.
+   *
+   * @return {class}
+   */
   log() {
     console.log('Class:',this.class.toString());
     console.log('I became one because:',this.class.decision.toString());
