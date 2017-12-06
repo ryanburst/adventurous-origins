@@ -384,8 +384,8 @@ const TABLES = {
       {
         "min": 1,
         "max": 1,
-        "raw": "Your parent died (roll on the Cause of Death supplemental table).",
-        "outcome": "Your parent died. Cause of death: {{cause-of-death}}."
+        "outcome": "Your parent died (roll on the Cause of Death supplemental table).",
+        "translate": "Your parent died. Cause of death: {{cause-of-death}}."
       },
       {
         "min": 2,
@@ -1640,14 +1640,14 @@ const TABLES = {
       {
         "min": 1,
         "max": 10,
-        "raw": "You suffered a tragedy. Roll on the Tragedies table.",
-        "outcome": "You suffered a tragedy. {{tragedies}}"
+        "outcome": "You suffered a tragedy. Roll on the Tragedies table.",
+        "translate": "You suffered a tragedy. {{tragedies}}"
       },
       {
         "min": 11,
         "max": 20,
-        "raw": "You gained a bit of good fortune. Roll on the Boons table.",
-        "outcome": "You gained a bit of good fortune. {{boons}}"
+        "outcome": "You gained a bit of good fortune. Roll on the Boons table.",
+        "translate": "You gained a bit of good fortune. {{boons}}"
       },
       {
         "min": 21,
@@ -1667,8 +1667,8 @@ const TABLES = {
       {
         "min": 51,
         "max": 70,
-        "raw": "You spent time working in a job related to your background. Start the game with an extra 2d6 gp.",
-        "outcome": "You spent time working in a job related to your background. Start the game with an extra {{2d6}}gp."
+        "outcome": "You spent time working in a job related to your background. Start the game with an extra 2d6 gp.",
+        "translate": "You spent time working in a job related to your background. Start the game with an extra {{2d6}}gp."
       },
       {
         "min": 71,
@@ -1678,38 +1678,38 @@ const TABLES = {
       {
         "min": 76,
         "max": 80,
-        "raw": "You went on an adventure. Roll on the Adventures table to see what happened to you. Work with your DM to determine the nature of the adventure and the creatures you encountered.",
-        "outcome": "You went on an adventure. {{adventures}} Work with your DM to determine the nature of the adventure and the creatures you encountered."
+        "outcome": "You went on an adventure. Roll on the Adventures table to see what happened to you. Work with your DM to determine the nature of the adventure and the creatures you encountered.",
+        "translate": "You went on an adventure. {{adventures}} Work with your DM to determine the nature of the adventure and the creatures you encountered."
       },
       {
         "min": 81,
         "max": 86,
-        "raw": "You had a supernatural experience. Roll on the Supernatural Events table to find out what it was.",
-        "outcome": "You had a supernatural experience. {{supernatural-events}}"
+        "outcome": "You had a supernatural experience. Roll on the Supernatural Events table to find out what it was.",
+        "translate": "You had a supernatural experience. {{supernatural-events}}"
       },
       {
         "min": 86,
         "max": 90,
-        "raw": "You fought in a battle. Roll on the War table to learn what happened to you. Work with your DM to come up with the reason for the battle and the factions involved. It might have been a small conflict between your community and a band of orcs, or it could have been a major battle in a larger war.",
-        "outcome": "You fought in a battle. {{war}} Work with your DM to come up with the reason for the battle and the factions involved. It might have been a small conflict between your community and a band of orcs, or it could have been a major battle in a larger war."
+        "outcome": "You fought in a battle. Roll on the War table to learn what happened to you. Work with your DM to come up with the reason for the battle and the factions involved. It might have been a small conflict between your community and a band of orcs, or it could have been a major battle in a larger war.",
+        "translate": "You fought in a battle. {{war}} Work with your DM to come up with the reason for the battle and the factions involved. It might have been a small conflict between your community and a band of orcs, or it could have been a major battle in a larger war."
       },
       {
         "min": 91,
         "max": 95,
-        "raw": "You committed a crime or were wrongly accused of doing so. Roll on the Crime table to determine the nature of the offense and on the Punishment table to see what became of you.",
-        "outcome": "You committed a crime or were wrongly accused of doing so. You were charged with \"{{crimes}}\". {{punishments}}"
+        "outcome": "You committed a crime or were wrongly accused of doing so. Roll on the Crime table to determine the nature of the offense and on the Punishment table to see what became of you.",
+        "translate": "You committed a crime or were wrongly accused of doing so. You were charged with \"{{crimes}}\". {{punishments}}"
       },
       {
         "min": 96,
         "max": 99,
-        "raw": "You encountered something magical. Roll on the Arcane Matters table.",
-        "outcome": "You encountered something magical. {{arcane-matters}}"
+        "outcome": "You encountered something magical. Roll on the Arcane Matters table.",
+        "translate": "You encountered something magical. {{arcane-matters}}"
       },
       {
         "min": 100,
         "max": 100,
-        "raw": "Something truly strange happened to you. Roll on the Weird Stuff table.",
-        "outcome": "Something truly strange happened to you. {{weird-stuff}}"
+        "outcome": "Something truly strange happened to you. Roll on the Weird Stuff table.",
+        "translate": "Something truly strange happened to you. {{weird-stuff}}"
       }
     ]
   },
@@ -2046,8 +2046,8 @@ const TABLES = {
       {
         "min": 1,
         "max": 2,
-        "raw": "A family member or a close friend died. Roll on the Cause of Death supplemental table to find out how.",
-        "outcome": "A family member or a close friend died. Cause of death: {{cause-of-death}}."
+        "outcome": "A family member or a close friend died. Roll on the Cause of Death supplemental table to find out how.",
+        "translate": "A family member or a close friend died. Cause of death: {{cause-of-death}}."
       },
       {
         "min": 3,
@@ -2097,8 +2097,8 @@ const TABLES = {
       {
         "min": 12,
         "max": 12,
-        "raw": "A current or prospective romantic partner of yours died. Roll on the Cause of Death supplemental table to find out how. If the result is murder, roll a d12. On a 1, you were responsible, whether directly or indirectly.",
-        "outcome": "A current or prospective romantic partner of yours died. Cause of death: {{cause-of-death}}. If the result is murder, roll a d12. On a 1, you were responsible, whether directly or indirectly."
+        "outcome": "A current or prospective romantic partner of yours died. Roll on the Cause of Death supplemental table to find out how. If the result is murder, roll a d12. On a 1, you were responsible, whether directly or indirectly.",
+        "translate": "A current or prospective romantic partner of yours died. Cause of death: {{cause-of-death}}. If the result is murder, roll a d12. On a 1, you were responsible, whether directly or indirectly."
       }
     ]
   },
@@ -2631,8 +2631,8 @@ const TABLES = {
       {
         "min": 3,
         "max": 3,
-        "raw": "Dead (roll on the Cause of Death table)",
-        "outcome": "Dead, {{cause-of-death}}"
+        "outcome": "Dead (roll on the Cause of Death table)",
+        "translate": "Dead, {{cause-of-death}}"
       },
       {
         "min": 4,

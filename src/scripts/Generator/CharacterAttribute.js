@@ -72,10 +72,8 @@ class CharacterAttribute {
    */
   set data(data) {
     this._data = data;
-    if( ! data.raw ) {
-      data.raw = data.outcome;
-    } else {
-      data.outcome = this.translateOutcome(data.outcome);
+    if( data.translate ) {
+      data.translate = this.translateOutcome(data.translate);
     }
   }
 
@@ -212,6 +210,9 @@ class CharacterAttribute {
    * @return {string}
    */
   toString() {
+    if( this.data.translate ) {
+      return this.data.translate;
+    }
     return this.data.outcome;
   }
 
