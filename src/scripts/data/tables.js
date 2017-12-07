@@ -1625,7 +1625,7 @@ const TABLES = {
         "translate": "You made an enemy of an adventurer. {{extra}} Use the supplemental tables and work with your DM to determine this hostile character’s identity and the danger this enemy poses to you.",
         "extra": function() {
           let roll = Dice.roll('1d6').get('total');
-          return 'You are ' + (roll % 2 == 0 ? 'not ' : '') + 'to blame for the rift.'
+          return 'You are ' + (roll % 2 == 0 ? 'not ' : '') + 'to blame for the rift.';
         }
       },
       {
@@ -1753,7 +1753,7 @@ const TABLES = {
       {
         "min": 1,
         "max": 1,
-        "outcome": "You were charmed or frightened by a spell."
+        "outcome": "You were charmed or frightened by a spell."
       },
       {
         "min": 2,
@@ -1798,7 +1798,8 @@ const TABLES = {
       {
         "min": 10,
         "max": 10,
-        "outcome": "Your fortune was read by a diviner. Roll twice on the Life Events table, but don’t apply the results. Instead, the DM picks one event as a portent of your future (which might or might not come true)."
+        "outcome": "Your fortune was read by a diviner. Roll twice on the Life Events table, but don’t apply the results. Instead, the DM picks one event as a portent of your future (which might or might not come true).",
+        "translate": "Your fortune was read by a diviner. The DM picks one of the following events as a portent of your future (which might or might not come true). Life Event: {{life-events}} Life Event: {{life-event}}"
       }
     ]
   },
@@ -1991,7 +1992,7 @@ const TABLES = {
         "extra": function() {
           let roll = Dice.roll('1d6').get('total');
           let choices = ['a celestial','a devil','a demon','a fey','an elemental','an undead being'];
-          return 'You are ' + choices[roll-1] + 'to blame for the rift.'
+          return choices[roll-1];
         }
       },
       {
@@ -2044,7 +2045,8 @@ const TABLES = {
       {
         "min": 5,
         "max": 5,
-        "outcome": "You were imprisoned for a crime you didn’t commit and spent 1d6 years at hard labor, in jail, or shackled to an oar in a slave galley."
+        "outcome": "You were imprisoned for a crime you didn’t commit and spent 1d6 years at hard labor, in jail, or shackled to an oar in a slave galley.",
+        "translate": "You were imprisoned for a crime you didn’t commit and spent {{1d6}} years at hard labor, in jail, or shackled to an oar in a slave galley."
       },
       {
         "min": 6,
@@ -2085,7 +2087,16 @@ const TABLES = {
         "min": 12,
         "max": 12,
         "outcome": "A current or prospective romantic partner of yours died. Roll on the Cause of Death supplemental table to find out how. If the result is murder, roll a d12. On a 1, you were responsible, whether directly or indirectly.",
-        "translate": "A current or prospective romantic partner of yours died. Cause of death: {{cause-of-death}}. If the result is murder, roll a d12. On a 1, you were responsible, whether directly or indirectly."
+        "translate": "A current or prospective romantic partner of yours died. Cause of death: {{cause-of-death}}. {{extra}}",
+        "extra": function(outcome) {
+          if( outcome.search(/Murder/i) !== -1 ) {
+            let roll = Dice.roll('1d12').get('total');
+            if( roll === 1 ) {
+              return 'You were responsible, either directly or indirectly.';
+            }
+          }
+          return 'You were not responsible';
+        }
       }
     ]
   },
@@ -2155,7 +2166,7 @@ const TABLES = {
         "min": 4,
         "max": 4,
         "outcome": "A dragon held you as a prisoner for 1d4 months until adventurers killed it.",
-        "translate": "A dragon held you as a prisoner for {{1d4}}} months until adventurers killed it."
+        "translate": "A dragon held you as a prisoner for {{1d4}} months until adventurers killed it."
       },
       {
         "min": 5,

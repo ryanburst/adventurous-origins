@@ -23,7 +23,7 @@ gulp.task('css', function () {
 
 gulp.task('scripts', function () {
   return gulp.src([
-      './src/scripts/plugin.js',
+      './src/scripts/plugins.js',
       './src/scripts/main.js',
       './src/scripts/data/*.js',
       './src/scripts/Generator/*.js',

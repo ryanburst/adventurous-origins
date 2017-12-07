@@ -71,9 +71,10 @@ class CharacterAttribute {
    * @param  {object} data Table data
    */
   set data(data) {
-    this._data = data;
-    if( data.translate ) {
-      data.translate = this.translateOutcome(data.translate);
+    this._data = Object.assign({},data);
+
+    if( this._data.translate ) {
+      this._data.translate = this.translateOutcome(this._data.translate);
     }
   }
 
@@ -215,7 +216,7 @@ class CharacterAttribute {
     // If a roll modifier has been set, replace the "MOD"
     // key word with the value of the modifier before
     // we roll for a result. (1d4+MOD => 1d4+5)
-    if( typeof this.rollModifier !== 'undefined' ) {
+    if( this.rollModifier !== false ) {
       dice = dice.replace("MOD",this.rollModifier);
     }
 
@@ -246,7 +247,7 @@ class CharacterAttribute {
         let table   = new CharacterAttribute(match);
         replacement = table.toString();
       } else if( match === 'extra' && this.data.extra ) {
-        replacement = this.data.extra();
+        replacement = this.data.extra(outcome);
       // Otherwise try a dice roll
       } else {
         replacement = Dice.roll(match).get('total');
@@ -281,6 +282,11 @@ class CharacterAttribute {
     return str.replace(/\s/g,'-').toLowerCase();
   }
 
+  /**
+   * Retrieves all options of a table as a flat set.
+   * @param  {string} tableName Name of table to grab options from
+   * @return {set}
+   */
   static options(tableName) {
     let key = CharacterAttribute.toKey(tableName)
     let table = TABLES[key];

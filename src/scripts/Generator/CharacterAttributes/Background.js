@@ -16,7 +16,7 @@ class Background extends CharacterAttribute {
    * @constructs Background
    */
   constructor(options) {
-    super({tableName: 'background', fetch: options.fetch});
+    super(Object.assign({tableName: 'background'},options));
     this.decision = new BackgroundDecision(this);
   }
 }

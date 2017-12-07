@@ -15,7 +15,7 @@ class Character {
    * @return {class}
    */
   generate(options) {
-    options = options || {};
+    options = Object.assign({},options);
 
     this.class      = new CharacterClass({fetch: options.class});
     this.race       = new Race({fetch: options.race});

@@ -1,8 +1,61 @@
+// Avoid `console` errors in browsers that lack a console.
+(function() {
+    var method;
+    var noop = function () {};
+    var methods = [
+        'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+        'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+        'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+        'timeline', 'timelineEnd', 'timeStamp', 'trace', 'warn'
+    ];
+    var length = methods.length;
+    var console = (window.console = window.console || {});
+
+    while (length--) {
+        method = methods[length];
+
+        // Only stub undefined methods.
+        if (!console[method]) {
+            console[method] = noop;
+        }
+    }
+}());
+
+if (typeof Object.assign != 'function') {
+  // Must be writable: true, enumerable: false, configurable: true
+  Object.defineProperty(Object, "assign", {
+    value: function assign(target, varArgs) { // .length of function is 2
+      'use strict';
+      if (target == null) { // TypeError if undefined or null
+        throw new TypeError('Cannot convert undefined or null to object');
+      }
+
+      var to = Object(target);
+
+      for (var index = 1; index < arguments.length; index++) {
+        var nextSource = arguments[index];
+
+        if (nextSource != null) { // Skip over if undefined or null
+          for (var nextKey in nextSource) {
+            // Avoid bugs when hasOwnProperty is shadowed
+            if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+              to[nextKey] = nextSource[nextKey];
+            }
+          }
+        }
+      }
+      return to;
+    },
+    writable: true,
+    configurable: true
+  });
+}
+
 $(document).ready(function() {
   let character = new Character();
 
   hydrateSelect('#select-class',CharacterClass.options('class'));
-  hydrateSelect('#select-race',CharacterClass.options('race'));
+  hydrateSelect('#select-race',CharacterClass.options('race-full'));
   hydrateSelect('#select-background',CharacterClass.options('background'));
   hydrateSelect('#select-charisma',CharacterClass.options('charisma'));
 
@@ -1702,7 +1755,7 @@ const TABLES = {
         "translate": "You made an enemy of an adventurer. {{extra}} Use the supplemental tables and work with your DM to determine this hostile character’s identity and the danger this enemy poses to you.",
         "extra": function() {
           let roll = Dice.roll('1d6').get('total');
-          return 'You are ' + (roll % 2 == 0 ? 'not ' : '') + 'to blame for the rift.'
+          return 'You are ' + (roll % 2 == 0 ? 'not ' : '') + 'to blame for the rift.';
         }
       },
       {
@@ -1830,7 +1883,7 @@ const TABLES = {
       {
         "min": 1,
         "max": 1,
-        "outcome": "You were charmed or frightened by a spell."
+        "outcome": "You were charmed or frightened by a spell."
       },
       {
         "min": 2,
@@ -1875,7 +1928,8 @@ const TABLES = {
       {
         "min": 10,
         "max": 10,
-        "outcome": "Your fortune was read by a diviner. Roll twice on the Life Events table, but don’t apply the results. Instead, the DM picks one event as a portent of your future (which might or might not come true)."
+        "outcome": "Your fortune was read by a diviner. Roll twice on the Life Events table, but don’t apply the results. Instead, the DM picks one event as a portent of your future (which might or might not come true).",
+        "translate": "Your fortune was read by a diviner. The DM picks one of the following events as a portent of your future (which might or might not come true). Life Event: {{life-events}} Life Event: {{life-event}}"
       }
     ]
   },
@@ -2068,7 +2122,7 @@ const TABLES = {
         "extra": function() {
           let roll = Dice.roll('1d6').get('total');
           let choices = ['a celestial','a devil','a demon','a fey','an elemental','an undead being'];
-          return 'You are ' + choices[roll-1] + 'to blame for the rift.'
+          return choices[roll-1];
         }
       },
       {
@@ -2121,7 +2175,8 @@ const TABLES = {
       {
         "min": 5,
         "max": 5,
-        "outcome": "You were imprisoned for a crime you didn’t commit and spent 1d6 years at hard labor, in jail, or shackled to an oar in a slave galley."
+        "outcome": "You were imprisoned for a crime you didn’t commit and spent 1d6 years at hard labor, in jail, or shackled to an oar in a slave galley.",
+        "translate": "You were imprisoned for a crime you didn’t commit and spent {{1d6}} years at hard labor, in jail, or shackled to an oar in a slave galley."
       },
       {
         "min": 6,
@@ -2162,7 +2217,16 @@ const TABLES = {
         "min": 12,
         "max": 12,
         "outcome": "A current or prospective romantic partner of yours died. Roll on the Cause of Death supplemental table to find out how. If the result is murder, roll a d12. On a 1, you were responsible, whether directly or indirectly.",
-        "translate": "A current or prospective romantic partner of yours died. Cause of death: {{cause-of-death}}. If the result is murder, roll a d12. On a 1, you were responsible, whether directly or indirectly."
+        "translate": "A current or prospective romantic partner of yours died. Cause of death: {{cause-of-death}}. {{extra}}",
+        "extra": function(outcome) {
+          if( outcome.search(/Murder/i) !== -1 ) {
+            let roll = Dice.roll('1d12').get('total');
+            if( roll === 1 ) {
+              return 'You were responsible, either directly or indirectly.';
+            }
+          }
+          return 'You were not responsible';
+        }
       }
     ]
   },
@@ -2232,7 +2296,7 @@ const TABLES = {
         "min": 4,
         "max": 4,
         "outcome": "A dragon held you as a prisoner for 1d4 months until adventurers killed it.",
-        "translate": "A dragon held you as a prisoner for {{1d4}}} months until adventurers killed it."
+        "translate": "A dragon held you as a prisoner for {{1d4}} months until adventurers killed it."
       },
       {
         "min": 5,
@@ -2753,7 +2817,7 @@ class Character {
    * @return {class}
    */
   generate(options) {
-    options = options || {};
+    options = Object.assign({},options);
 
     this.class      = new CharacterClass({fetch: options.class});
     this.race       = new Race({fetch: options.race});
@@ -2891,9 +2955,10 @@ class CharacterAttribute {
    * @param  {object} data Table data
    */
   set data(data) {
-    this._data = data;
-    if( data.translate ) {
-      data.translate = this.translateOutcome(data.translate);
+    this._data = Object.assign({},data);
+
+    if( this._data.translate ) {
+      this._data.translate = this.translateOutcome(this._data.translate);
     }
   }
 
@@ -3035,7 +3100,7 @@ class CharacterAttribute {
     // If a roll modifier has been set, replace the "MOD"
     // key word with the value of the modifier before
     // we roll for a result. (1d4+MOD => 1d4+5)
-    if( typeof this.rollModifier !== 'undefined' ) {
+    if( this.rollModifier !== false ) {
       dice = dice.replace("MOD",this.rollModifier);
     }
 
@@ -3066,7 +3131,7 @@ class CharacterAttribute {
         let table   = new CharacterAttribute(match);
         replacement = table.toString();
       } else if( match === 'extra' && this.data.extra ) {
-        replacement = this.data.extra();
+        replacement = this.data.extra(outcome);
       // Otherwise try a dice roll
       } else {
         replacement = Dice.roll(match).get('total');
@@ -3101,6 +3166,11 @@ class CharacterAttribute {
     return str.replace(/\s/g,'-').toLowerCase();
   }
 
+  /**
+   * Retrieves all options of a table as a flat set.
+   * @param  {string} tableName Name of table to grab options from
+   * @return {set}
+   */
   static options(tableName) {
     let key = CharacterAttribute.toKey(tableName)
     let table = TABLES[key];
@@ -3293,7 +3363,7 @@ class Background extends CharacterAttribute {
    * @constructs Background
    */
   constructor(options) {
-    super({tableName: 'background', fetch: options.fetch});
+    super(Object.assign({tableName: 'background'},options));
     this.decision = new BackgroundDecision(this);
   }
 }
@@ -3411,7 +3481,7 @@ class CharacterClass extends CharacterAttribute {
    * @constructs CharacterClass
    */
   constructor(options) {
-    super({tableName: 'class', fetch: options.fetch});
+    super(Object.assign({tableName: 'class'},options));
     this.decision = new ClassDecision(this);
   }
 }
@@ -3433,7 +3503,7 @@ class CharismaScore extends CharacterAttribute {
    * @constructs CharismaScore
    */
   constructor(options) {
-    super({tableName: 'charisma', fetch: options.fetch});
+    super(Object.assign({tableName: 'charisma'},options));
   }
 }
 
@@ -3800,7 +3870,13 @@ class Race extends CharacterAttribute {
    * @constructs Race
    */
   constructor(options) {
-    super({tableName: 'race', fetch: options.fetch});
+    options = Object.assign({tableName: 'race'},options);
+
+    if( options.fetch !== 'random' ) {
+      options.tableName = 'race-full';
+    }
+
+    super(options);
   }
 }
 

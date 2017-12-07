@@ -15,6 +15,12 @@ class Race extends CharacterAttribute {
    * @constructs Race
    */
   constructor(options) {
-    super({tableName: 'race', fetch: options.fetch});
+    options = Object.assign({tableName: 'race'},options);
+
+    if( options.fetch !== 'random' ) {
+      options.tableName = 'race-full';
+    }
+
+    super(options);
   }
 }

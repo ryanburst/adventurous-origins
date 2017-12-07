@@ -2,7 +2,7 @@ $(document).ready(function() {
   let character = new Character();
 
   hydrateSelect('#select-class',CharacterClass.options('class'));
-  hydrateSelect('#select-race',CharacterClass.options('race'));
+  hydrateSelect('#select-race',CharacterClass.options('race-full'));
   hydrateSelect('#select-background',CharacterClass.options('background'));
   hydrateSelect('#select-charisma',CharacterClass.options('charisma'));
 

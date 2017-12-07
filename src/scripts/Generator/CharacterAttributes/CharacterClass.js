@@ -16,7 +16,7 @@ class CharacterClass extends CharacterAttribute {
    * @constructs CharacterClass
    */
   constructor(options) {
-    super({tableName: 'class', fetch: options.fetch});
+    super(Object.assign({tableName: 'class'},options));
     this.decision = new ClassDecision(this);
   }
 }

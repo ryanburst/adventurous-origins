@@ -15,6 +15,6 @@ class CharismaScore extends CharacterAttribute {
    * @constructs CharismaScore
    */
   constructor(options) {
-    super({tableName: 'charisma', fetch: options.fetch});
+    super(Object.assign({tableName: 'charisma'},options));
   }
 }
