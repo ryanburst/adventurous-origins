@@ -37,32 +37,33 @@ gulp.task('scripts', function () {
 });
 
 
-gulp.task('copy', ['css','scripts'], function() {
-  gulp.src([
-    './src/statics/**/**'
-  ])
-  .pipe(gulp.dest('./dist/'));
+gulp.task('statics', ['css','scripts'], function() {
+  return gulp.src([
+      './src/statics/**/**/**'
+    ])
+    .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('docs', ['copy'], function() {
-  gulp.src([
-    './dist/**'
-  ])
-  .pipe(gulp.dest('./docs/'));
+gulp.task('copy', ['css','scripts'], function() {
+  return gulp.src([
+      './dist/**/**/**',
+      './src/statics/**/**/**'
+    ])
+    .pipe(gulp.dest('./docs/'));
 });
 
 gulp.task('clean', function () {
-    return gulp.src(['./dist','./docs'], {read: false})
-        .pipe(clean());
+  return gulp.src(['./dist','./docs'], {read: false})
+      .pipe(clean());
 });
 
 gulp.task('watch', function () {
   gulp.watch('./src/scss/**/**', ['css']);
   gulp.watch('./src/scripts/**/*.js', ['scripts']);
-  gulp.watch('./src/statics/**/**', ['copy','docs']);
+  gulp.watch('./src/statics/**/**', ['copy']);
 });
 
-gulp.task('default', ['css','scripts','copy','docs']);
+gulp.task('default', ['css','scripts','statics','copy']);
 gulp.task('build',['clean'],function() {
   gulp.start('default');
 });

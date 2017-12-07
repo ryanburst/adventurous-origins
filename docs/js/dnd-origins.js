@@ -1344,42 +1344,6 @@ const TABLES = {
       }
     ]
   },
-  "class-decision-druid": {
-    "name": "Druid",
-    "roll": "1d6",
-    "outcomes": [
-      {
-        "min": 1,
-        "max": 1,
-        "outcome": "I saw too much devastation in the wild places, too much of nature’s splendor ruined by the despoilers. I joined a circle of druids to fight back against the enemies of nature."
-      },
-      {
-        "min": 2,
-        "max": 2,
-        "outcome": "I found a place among a group of druids after I fled a catastrophe."
-      },
-      {
-        "min": 3,
-        "max": 3,
-        "outcome": "I have always had an affinity for animals, so I explored my talent to see how I could best use it."
-      },
-      {
-        "min": 4,
-        "max": 4,
-        "outcome": "I befriended a druid and was moved by druidic teachings. I decided to follow my friend’s guidance and give something back to the world."
-      },
-      {
-        "min": 5,
-        "max": 5,
-        "outcome": "While I was growing up, I saw spirits all around me — entities no one else could perceive. I sought out the druids to help me understand the visions and communicate with these beings."
-      },
-      {
-        "min": 6,
-        "max": 6,
-        "outcome": "I have always felt disgust for creatures of unnatural origin. For this reason, I immersed myself in the study of the druidic mysteries and became a champion of the natural order."
-      }
-    ]
-  },
   "class-decision-fighter": {
     "name": "Fighter",
     "roll": "1d6",
@@ -1734,7 +1698,12 @@ const TABLES = {
       {
         "min": 31,
         "max": 40,
-        "outcome": "You made an enemy of an adventurer. Roll a d6. An odd number indicates you are to blame for the rift, and an even number indicates you are blameless. Use the supplemental tables and work with your DM to determine this hostile character’s identity and the danger this enemy poses to you."
+        "outcome": "You made an enemy of an adventurer. Roll a d6. An odd number indicates you are to blame for the rift, and an even number indicates you are blameless. Use the supplemental tables and work with your DM to determine this hostile character’s identity and the danger this enemy poses to you.",
+        "translate": "You made an enemy of an adventurer. {{extra}} Use the supplemental tables and work with your DM to determine this hostile character’s identity and the danger this enemy poses to you.",
+        "extra": function() {
+          let roll = Dice.roll('1d6').get('total');
+          return 'You are ' + (roll % 2 == 0 ? 'not ' : '') + 'to blame for the rift.'
+        }
       },
       {
         "min": 41,
@@ -1797,7 +1766,8 @@ const TABLES = {
       {
         "min": 1,
         "max": 10,
-        "outcome": "You nearly died. You have nasty scars on your body, and you are missing an ear, 1d3 fingers, or 1d4 toes."
+        "outcome": "You nearly died. You have nasty scars on your body, and you are missing an ear, 1d3 fingers, or 1d4 toes.",
+        "translate": "You nearly died. You have nasty scars on your body, and you are missing an ear, {{1d3}} fingers, or {{1d4}} toes."
       },
       {
         "min": 11,
@@ -1837,12 +1807,14 @@ const TABLES = {
       {
         "min": 81,
         "max": 90,
-        "outcome": "You found some treasure on your adventure. You have 2d6 gp left from your share of it."
+        "outcome": "You found some treasure on your adventure. You have 2d6 gp left from your share of it.",
+        "translate": "You found some treasure on your adventure. You have {{2d6}}gp left from your share of it."
       },
       {
         "min": 91,
         "max": 99,
-        "outcome": "You found a considerable amount of treasure on your adventure. You have 1d20 + 50 gp left from your share of it."
+        "outcome": "You found a considerable amount of treasure on your adventure. You have 1d20 + 50 gp left from your share of it.",
+        "translate": "You found a considerable amount of treasure on your adventure. You have {{1d20+50}}gp left from your share of it."
       },
       {
         "min": 100,
@@ -1929,7 +1901,8 @@ const TABLES = {
       {
         "min": 4,
         "max": 4,
-        "outcome": "You found some money. You have 1d20 gp in addition to your regular starting funds."
+        "outcome": "You found some money. You have 1d20 gp in addition to your regular starting funds.",
+        "translate": "You found some money. You have {{1d20}}gp in addition to your regular starting funds."
       },
       {
         "min": 5,
@@ -1959,7 +1932,8 @@ const TABLES = {
       {
         "min": 10,
         "max": 10,
-        "outcome": "A distant relative left you a stipend that enables you to live at the comfortable lifestyle for 1d20 years. If you choose to live at a higher lifestyle, you reduce the price of the lifestyle by 2 gp during that time period."
+        "outcome": "A distant relative left you a stipend that enables you to live at the comfortable lifestyle for 1d20 years. If you choose to live at a higher lifestyle, you reduce the price of the lifestyle by 2 gp during that time period.",
+        "translate": "A distant relative left you a stipend that enables you to live at the comfortable lifestyle for {{1d20}} years. If you choose to live at a higher lifestyle, you reduce the price of the lifestyle by 2 gp during that time period."
       }
     ]
   },
@@ -2031,7 +2005,8 @@ const TABLES = {
       {
         "min": 9,
         "max": 12,
-        "outcome": "You were caught and convicted. You spent time in jail, chained to an oar, or performing hard labor. You served a sentence of 1d4 years or succeeded in escaping after that much time."
+        "outcome": "You were caught and convicted. You spent time in jail, chained to an oar, or performing hard labor. You served a sentence of 1d4 years or succeeded in escaping after that much time.",
+        "translate": "You were caught and convicted. You spent time in jail, chained to an oar, or performing hard labor. You served a sentence of {{1d4}} years or succeeded in escaping after that much time."
       }
     ]
   },
@@ -2052,7 +2027,8 @@ const TABLES = {
       {
         "min": 11,
         "max": 15,
-        "outcome": "A devil tempted you. Make a DC 10 Wisdom saving throw. On a failed save, your alignment shifts one step toward evil (if it’s not evil already), and you start the game with an additional 1d20 + 50 gp."
+        "outcome": "A devil tempted you. Make a DC 10 Wisdom saving throw. On a failed save, your alignment shifts one step toward evil (if it’s not evil already), and you start the game with an additional 1d20 + 50 gp.",
+        "translate": "A devil tempted you. Make a DC 10 Wisdom saving throw. On a failed save, your alignment shifts one step toward evil (if it’s not evil already), and you start the game with an additional {{1d20+50}}gp."
       },
       {
         "min": 16,
@@ -2087,7 +2063,13 @@ const TABLES = {
       {
         "min": 71,
         "max": 75,
-        "outcome": "You were briefly possessed. Roll a d6 to determine what type of creature possessed you: 1, celestial; 2, devil; 3, demon; 4, fey; 5, elemental; 6, undead."
+        "outcome": "You were briefly possessed. Roll a d6 to determine what type of creature possessed you: 1, celestial; 2, devil; 3, demon; 4, fey; 5, elemental; 6, undead.",
+        "translate": "You were briefly possessed by {{extra}}",
+        "extra": function() {
+          let roll = Dice.roll('1d6').get('total');
+          let choices = ['a celestial','a devil','a demon','a fey','an elemental','an undead being'];
+          return 'You are ' + choices[roll-1] + 'to blame for the rift.'
+        }
       },
       {
         "min": 76,
@@ -2169,7 +2151,12 @@ const TABLES = {
       {
         "min": 11,
         "max": 11,
-        "outcome": "A romantic relationship ended. Roll a d6. An odd number means it ended with bad feelings, while an even number means it ended amicably."
+        "outcome": "A romantic relationship ended. Roll a d6. An odd number means it ended with bad feelings, while an even number means it ended amicably.",
+        "translate": "A romantic relationship ended. {{extra}}",
+        "extra": function() {
+          let roll = Dice.roll('1d6').get('total');
+          return 'It ended ' + (roll % 2 == 0 ? 'amicably.' : 'with bad feelings.')
+        }
       },
       {
         "min": 12,
@@ -2227,7 +2214,8 @@ const TABLES = {
       {
         "min": 1,
         "max": 1,
-        "outcome": "You were turned into a toad and remained in that form for 1d4 weeks."
+        "outcome": "You were turned into a toad and remained in that form for 1d4 weeks.",
+        "translate": "You were turned into a toad and remained in that form for {{1d4}} weeks."
       },
       {
         "min": 2,
@@ -2237,12 +2225,14 @@ const TABLES = {
       {
         "min": 3,
         "max": 3,
-        "outcome": "You were enslaved by a hag, a satyr, or some other being and lived in that creature’s thrall for 1d6 years."
+        "outcome": "You were enslaved by a hag, a satyr, or some other being and lived in that creature’s thrall for 1d6 years.",
+        "translate": "You were enslaved by a hag, a satyr, or some other being and lived in that creature’s thrall for {{1d6}} years."
       },
       {
         "min": 4,
         "max": 4,
-        "outcome": "A dragon held you as a prisoner for 1d4 months until adventurers killed it."
+        "outcome": "A dragon held you as a prisoner for 1d4 months until adventurers killed it.",
+        "translate": "A dragon held you as a prisoner for {{1d4}}} months until adventurers killed it."
       },
       {
         "min": 5,
@@ -2257,7 +2247,8 @@ const TABLES = {
       {
         "min": 7,
         "max": 7,
-        "outcome": "You went insane for 1d6 years and recently regained your sanity. A tic or some other bit of odd behavior might linger."
+        "outcome": "You went insane for 1d6 years and recently regained your sanity. A tic or some other bit of odd behavior might linger.",
+        "translate": "You went insane for {{1d6}} years and recently regained your sanity. A tic or some other bit of odd behavior might linger."
       },
       {
         "min": 8,
@@ -3074,6 +3065,8 @@ class CharacterAttribute {
       if( TABLES[match] ) {
         let table   = new CharacterAttribute(match);
         replacement = table.toString();
+      } else if( match === 'extra' && this.data.extra ) {
+        replacement = this.data.extra();
       // Otherwise try a dice roll
       } else {
         replacement = Dice.roll(match).get('total');

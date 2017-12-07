@@ -638,7 +638,7 @@ textarea {
   content: "arrow_drop_down";
   position: absolute;
   display: inline-block;
-  top: 0px;
+  top: 5px;
   right: 2px;
   font-family: "Material Icons";
   font-size: 23px;
@@ -814,6 +814,8 @@ body.menu-open {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
