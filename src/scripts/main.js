@@ -30,7 +30,7 @@ $(document).ready(function() {
   }
 
   function render() {
-    $('#class').html(character.class.toString());
+    $('#class').html('\t' + character.class.toString());
     $('.c-class').html(character.class.toString().toLowerCase());
     $('#race').html(character.race.toString());
     $('#background').html(character.background.toString());

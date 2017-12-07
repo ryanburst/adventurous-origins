@@ -590,9 +590,9 @@ textarea {
 
 .heading__small {
   position: absolute;
-  top: 2em;
-  left: 4em;
-  font-size: 0.28em;
+  top: 1em;
+  left: 2.4em;
+  font-size: 0.44em;
 }
 
 .heading__first {
@@ -856,6 +856,7 @@ body.menu-open {
 
 .attribute__cell ol {
   padding: 0;
+  margin-bottom: 0;
   list-style: none;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
@@ -882,6 +883,19 @@ body.menu-open {
   .attribute__cell li {
     width: 49%;
   }
+}
+
+.legal {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: #666666;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.legal p {
+  margin-top: 0;
+  margin-bottom: 5px;
 }
 
 @media print, (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 1.25dppx), (min-resolution: 120dpi) {
@@ -951,5 +965,16 @@ body.menu-open {
   h2,
   h3 {
     page-break-after: avoid;
+  }
+  .controls {
+    display: none;
+  }
+  .attribute__cell ol {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .attribute__cell li {
+    width: 49%;
   }
 }

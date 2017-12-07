@@ -80,4 +80,16 @@
   h3 {
     page-break-after: avoid;
   }
+
+  .controls {
+    display: none;
+  }
+  .attribute__cell {
+    ol {
+      display: flex;
+    }
+    li {
+      width: 49%;
+    }
+  }
 }
