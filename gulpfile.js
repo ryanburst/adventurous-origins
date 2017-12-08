@@ -29,7 +29,7 @@ gulp.task('scripts', function () {
       './src/scripts/Generator/*.js',
       './src/scripts/Generator/CharacterAttributes/*.js',
     ])
-    .pipe(concat('dnd-origins.js'))
+    .pipe(concat('adventurous-origins.js'))
     /*.pipe(babel({
       presets: ['es2015']
     }))*/
