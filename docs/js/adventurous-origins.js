@@ -122,7 +122,13 @@ $(document).ready(function() {
   function hydrateSelect(selector,optionSet) {
     let $select = $(selector);
 
-    $select.empty().append('<option value="random">Random</option');
+    $select.empty().append('<option value="random">Random</option>');
+
+    // Add an option for randomly selecting from the full race list instead of just the
+    // truncated race table in the Guide
+    if( $select.attr('id') === 'select-race' ) {
+      $select.append('<option value="random-full">Random (Full List)</option>');
+    }
 
     optionSet.forEach( (option) => $select.append('<option>' + option + '</option') );
   }
@@ -3872,8 +3878,15 @@ class Race extends CharacterAttribute {
   constructor(options) {
     options = Object.assign({tableName: 'race'},options);
 
+
     if( options.fetch !== 'random' ) {
       options.tableName = 'race-full';
+
+      // Randomly select from the full race list instead of the
+      // truncated race tables in the book.
+      if( options.fetch === 'random-full' ) {
+        options.fetch = 'random';
+      }
     }
 
     super(options);

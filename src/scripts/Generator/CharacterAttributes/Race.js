@@ -17,8 +17,15 @@ class Race extends CharacterAttribute {
   constructor(options) {
     options = Object.assign({tableName: 'race'},options);
 
+
     if( options.fetch !== 'random' ) {
       options.tableName = 'race-full';
+
+      // Randomly select from the full race list instead of the
+      // truncated race tables in the book.
+      if( options.fetch === 'random-full' ) {
+        options.fetch = 'random';
+      }
     }
 
     super(options);
