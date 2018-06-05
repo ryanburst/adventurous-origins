@@ -607,7 +607,7 @@ textarea {
           box-sizing: border-box;
   display: inline-block;
   font-family: Roboto, sans-serif;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   cursor: pointer;
   text-decoration: none;
   margin: 0px;

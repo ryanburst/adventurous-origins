@@ -1,27 +1,27 @@
 {
-  "name": "dnd-origins",
+  "name": "adventurous-origins",
   "description": "Random character background generator",
   "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "git@github.com:ryanburst/dnd-origins.git"
+    "url": "git@github.com:adventurous-origins.git"
   },
   "keywords": [],
   "author": "Ryan Burst",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ryanburst/dnd-origins/issues"
+    "url": "https://github.com/ryanburst/adventurous-origins/issues"
   },
-  "homepage": "",
+  "homepage": "https://ryanburst.github.io/adventurous-origins/",
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.0.0",
-    "gulp-babel": "^6.1.2",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-autoprefixer": "^4.1.0",
+    "gulp-babel": "^6.1.3",
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.1",
-    "gulp-imagemin": "^3.3.0",
-    "gulp-sass": "^3.1.0",
-    "gulp-watch": "^4.3.11"
+    "gulp-imagemin": "^4.1.0",
+    "gulp-sass": "^4.0.1",
+    "gulp-watch": "^5.0.0"
   }
 }
